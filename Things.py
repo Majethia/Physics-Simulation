@@ -2,6 +2,7 @@ from Utils import Vector
 from constansts import *
 import pygame
 
+
 class Thing:
     def __init__(self, radius: int, mass: int, pos: Vector, friction_toggle: bool = True):
         self.radius = radius
@@ -31,10 +32,22 @@ class Thing:
         self.velocity += self.acceleration
 
     def update_position(self):
-        self.pos += (self.velocity)/10
+        if self.out_of_bounds(self.pos + (self.velocity)/10):
+            self.pos += (self.velocity)/10
 
     def update(self):
         self.update_acceleration()
         self.update_velocity()
         self.update_position()
         self.update_force()
+
+    def out_of_bounds(self, pos):
+        if 0 < pos.x < 640 and 0 < pos.y < 360:
+            return True
+        elif 0 < pos.x < 640:
+            self.velocity.y = 0
+            return True
+        elif 0 < pos.y < 360:
+            self.velocity.x = 0
+            return True
+        return False
