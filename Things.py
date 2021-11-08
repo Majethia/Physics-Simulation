@@ -21,23 +21,20 @@ class Thing:
     def update_force(self):
         self.force = Vector(0, 0)
         if self.friction_toggle:
+            self.velocity.round()
             self.force -= self.velocity.unit_vector()*(self.mass*ACCELERATION_DUE_TO_GRAVITY*COEFFICIENT_OF_FRICTION)
 
     def update_acceleration(self):
         self.acceleration = self.force/self.mass
-        # print(f"Acceleration: {self.acceleration}", end=" ")
 
     def update_velocity(self):
         self.velocity += self.acceleration
-        # print(f"Velocity: {self.velocity}", end=" ")
 
     def update_position(self):
         self.pos += (self.velocity)/10
-        # print(f"Position: {self.pos}")
 
     def update(self):
         self.update_acceleration()
         self.update_velocity()
         self.update_position()
         self.update_force()
-        
