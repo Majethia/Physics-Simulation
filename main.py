@@ -6,7 +6,7 @@ import sys
 pygame.init()
 
 SIZE = WIDTH, HEIGHT = 640, 360
-FPS = 30
+FPS = 60
 
 WIN = pygame.display.set_mode(SIZE)
 pygame.display.set_caption("Gravity Sim.")
@@ -26,10 +26,10 @@ def main():
         keys_pressed = pygame.key.get_pressed()
 
         if keys_pressed[pygame.K_a]:
-            p.apply_force(Vector(5000,0))
+            p.apply_force(Vector(-100,0))
         
         if keys_pressed[pygame.K_d]:
-            p.apply_force(Vector(-5000,0))
+            p.apply_force(Vector(+100,0))
 
         WIN.fill((255, 255, 255))
         p.update()
