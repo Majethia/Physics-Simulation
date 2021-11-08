@@ -15,7 +15,7 @@ pygame.display.set_caption("Physics Simulator.")
 def main():
     clock = pygame.time.Clock()
     run = True
-    p = Thing(radius=20, mass=200, pos=Vector(320, 180))
+    p = Thing(radius=20, mass=1000, pos=Vector(320, 180))
     while run:
         clock.tick(FPS)
         for event in pygame.event.get():
@@ -24,16 +24,16 @@ def main():
         keys_pressed = pygame.key.get_pressed()
 
         if keys_pressed[pygame.K_a]:
-            p.apply_force(Vector(-100, 0))
+            p.apply_force(Vector(-300, 0))
         
         if keys_pressed[pygame.K_d]:
-            p.apply_force(Vector(+100, 0))
+            p.apply_force(Vector(+300, 0))
 
         if keys_pressed[pygame.K_w]:
-            p.apply_force(Vector(0, -100))
+            p.apply_force(Vector(0, -300))
         
         if keys_pressed[pygame.K_s]:
-            p.apply_force(Vector(0, +100))
+            p.apply_force(Vector(0, +300))
 
         WIN.fill((255, 255, 255))
         p.update()
