@@ -4,17 +4,13 @@ import pygame
 
 
 class Thing:
-    def __init__(self, radius: int, mass: int, pos: Vector, friction_toggle: bool = True):
-        self.radius = radius
+    def __init__(self, mass: int, pos: Vector, friction_toggle: bool):
         self.mass = mass
         self.pos = pos
         self.velocity = Vector(0, 0)
         self.acceleration = Vector(0, 0)
         self.force = Vector(0, 0)
         self.friction_toggle = friction_toggle
-
-    def draw(self, window):
-        pygame.draw.circle(window, (255,0,0), (self.pos.x, self.pos.y), self.radius)
 
     def apply_force(self, force: Vector):
         self.force += force
@@ -35,19 +31,43 @@ class Thing:
         if self.out_of_bounds(self.pos + (self.velocity)/10):
             self.pos += (self.velocity)/10
 
+    def check_vibration(self):
+        if self.velocity.magnitude() < 0.5:
+            self.velocity = Vector(0, 0)
+
     def update(self):
         self.update_acceleration()
         self.update_velocity()
         self.update_position()
+        self.check_vibration()
+
         self.update_force()
 
     def out_of_bounds(self, pos):
-        if 0 < pos.x < 640 and 0 < pos.y < 360:
+        if 0 < pos.x < WIDTH and 0 < pos.y < HEIGHT:
             return True
-        elif 0 < pos.x < 640:
+        elif 0 < pos.x < WIDTH:
             self.velocity.y = 0
             return True
-        elif 0 < pos.y < 360:
+        elif 0 < pos.y < HEIGHT:
             self.velocity.x = 0
             return True
         return False
+
+class Circle(Thing):
+    def __init__(self, radius: int, mass: int, pos: Vector, friction_toggle: bool = True):
+        super().__init__(mass, pos, friction_toggle=friction_toggle)
+        self.radius = radius
+        # self.hitbox =                  #(x – h)2 + (y – k)2 = r2
+
+    def draw(self, window):
+        pygame.draw.circle(window, (255,0,0), (self.pos.x, self.pos.y), self.radius)
+
+
+class Square(Thing):
+    def __init__(self, side, mass: int, pos: Vector, friction_toggle: bool):
+        super().__init__(mass, pos, friction_toggle)
+        self.side = side
+    
+    def draw(self, window):
+        pygame.draw.rect(window, (255,0,0), pygame.Rect(self.pos.x, self.pos.y, self.side, self.side))

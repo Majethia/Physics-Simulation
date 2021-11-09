@@ -20,12 +20,12 @@ class Vector:
         return Vector(self.x / v, self.y / v)
 
     def __str__(self) -> str:
-        i = f"+{round(self.x, 1)}" if self.x > 0 else round(self.x, 1)
-        j = f"+{round(self.y, 1)}" if self.y > 0 else round(self.y, 1)
+        i = f"+{round(self.x, 2)}" if self.x >= 0 else round(self.x, 2)
+        j = f"+{round(self.y, 2)}" if self.y >= 0 else round(self.y, 2)
         return f"{i}i, {j}j"
 
     def unit_vector(self):
-        magnitude = math.sqrt((self.x*self.x) + (self.y*self.y))
+        magnitude = self.magnitude()
         if magnitude == 0:
             return Vector(0, 0)
         return Vector(self.x/magnitude, self.y/magnitude)
@@ -36,3 +36,6 @@ class Vector:
     def round(self):
         self.x = round(self.x, 2)
         self.y = round(self.y, 2)
+
+    def magnitude(self):
+        return math.sqrt((self.x*self.x) + (self.y*self.y))

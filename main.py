@@ -1,11 +1,11 @@
 import pygame
 from Utils import Vector
-from Things import Thing
+from Things import Circle, Square
+from constansts import *
 
 pygame.init()
 
-SIZE = WIDTH, HEIGHT = 640, 360
-FPS = 60
+FORCE = 1000
 
 WIN = pygame.display.set_mode(SIZE)
 pygame.display.set_caption("Physics Simulator.")
@@ -15,7 +15,7 @@ pygame.display.set_caption("Physics Simulator.")
 def main():
     clock = pygame.time.Clock()
     run = True
-    p = Thing(radius=20, mass=1000, pos=Vector(320, 180))
+    p = Square(50, mass=1000, pos=Vector(320, 180), friction_toggle=True)
     while run:
         clock.tick(FPS)
         for event in pygame.event.get():
@@ -24,16 +24,16 @@ def main():
         keys_pressed = pygame.key.get_pressed()
 
         if keys_pressed[pygame.K_a]:
-            p.apply_force(Vector(-300, 0))
+            p.apply_force(Vector(-FORCE, 0))
         
         if keys_pressed[pygame.K_d]:
-            p.apply_force(Vector(+300, 0))
+            p.apply_force(Vector(+FORCE, 0))
 
         if keys_pressed[pygame.K_w]:
-            p.apply_force(Vector(0, -300))
+            p.apply_force(Vector(0, -FORCE))
         
         if keys_pressed[pygame.K_s]:
-            p.apply_force(Vector(0, +300))
+            p.apply_force(Vector(0, +FORCE))
 
         WIN.fill((255, 255, 255))
         p.update()
