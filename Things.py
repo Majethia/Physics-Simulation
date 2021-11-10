@@ -17,6 +17,9 @@ class Thing:
     def apply_force(self, force: Vector):
         self.force += force
 
+    def apply_brakes(self):
+        self.force -= self.velocity.unit_vector()*(self.mass*ACCELERATION_DUE_TO_GRAVITY*COEFFICIENT_OF_FRICTION)*5
+
     def update_force(self):
         if self.force_reset:
             self.force = Vector(0, 0)
@@ -53,17 +56,15 @@ class Thing:
         elif (0 + self.size) < pos.x < (WIDTH - self.size):
             y = self.velocity.y
             self.velocity.y = 0
-            self.apply_force(Vector(0, -y*self.mass))
+            self.apply_force(Vector(0, -y*self.mass)*COEFFICIENT_OF_RESTITUTION)
             self.force_reset = False
             return True
         elif (0 + self.size) < pos.y < (HEIGHT - self.size):
             x = self.velocity.x
             self.velocity.x = 0
-            self.apply_force(Vector(-x*self.mass, 0))
+            self.apply_force(Vector(-x*self.mass, 0)*COEFFICIENT_OF_RESTITUTION)
             self.force_reset = False
             return True
-        self.apply_force(Vector(-self.velocity.x*self.mass, -self.velocity.y*self.mass))
-        self.force_reset = False
         return False
 
 

@@ -15,7 +15,7 @@ pygame.display.set_caption("Physics Simulator.")
 def main():
     clock = pygame.time.Clock()
     run = True
-    p = Circle(20, mass=1000, pos=Vector(320, 180), friction_toggle=True)
+    p = Circle(20, mass=1000, pos=Vector(WIDTH/2, HEIGHT/2), friction_toggle=True)
     while run:
         clock.tick(FPS)
         for event in pygame.event.get():
@@ -34,6 +34,9 @@ def main():
         
         if keys_pressed[pygame.K_s]:
             p.apply_force(Vector(0, +FORCE))
+
+        if keys_pressed[pygame.K_SPACE]:
+            p.apply_brakes()
 
         WIN.fill((255, 255, 255))
         p.update()

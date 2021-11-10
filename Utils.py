@@ -20,8 +20,8 @@ class Vector:
         return Vector(self.x / v, self.y / v)
 
     def __str__(self) -> str:
-        i = f"+{round(self.x, 2)}" if self.x >= 0 else round(self.x, 2)
-        j = f"+{round(self.y, 2)}" if self.y >= 0 else round(self.y, 2)
+        i = f"+{round(self.x, 3)}" if self.x >= 0 else round(self.x, 3)
+        j = f"+{round(self.y, 3)}" if self.y >= 0 else round(self.y, 3)
         return f"{i}i, {j}j"
 
     def unit_vector(self):
