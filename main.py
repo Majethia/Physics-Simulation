@@ -5,7 +5,7 @@ from constansts import *
 
 pygame.init()
 
-FORCE = 1000
+FORCE = 2000
 
 WIN = pygame.display.set_mode(SIZE)
 pygame.display.set_caption("Physics Simulator.")
@@ -15,7 +15,7 @@ pygame.display.set_caption("Physics Simulator.")
 def main():
     clock = pygame.time.Clock()
     run = True
-    p = Square(50, mass=1000, pos=Vector(320, 180), friction_toggle=True)
+    p = Circle(20, mass=1000, pos=Vector(320, 180), friction_toggle=True)
     while run:
         clock.tick(FPS)
         for event in pygame.event.get():
@@ -38,6 +38,7 @@ def main():
         WIN.fill((255, 255, 255))
         p.update()
         p.draw(WIN)
+
         print(f"Position: {p.pos}  Velocity: {p.velocity}  Acceleration: {p.acceleration}")
         
 
