@@ -1,7 +1,6 @@
 from Utils import Vector
 from constansts import *
 import pygame
-import math
 
 class Thing:
     def __init__(self,size: int, mass: int, pos: Vector, friction_toggle: bool):
@@ -21,8 +20,7 @@ class Thing:
         self.force -= self.velocity.unit_vector()*(self.mass*ACCELERATION_DUE_TO_GRAVITY*COEFFICIENT_OF_FRICTION)*5
 
     def update_force(self):
-        if self.force_reset:
-            self.force = Vector(0, 0)
+        self.force = Vector(0, 0)
         if self.friction_toggle:
             self.velocity.round()
             self.force -= self.velocity.unit_vector()*(self.mass*ACCELERATION_DUE_TO_GRAVITY*COEFFICIENT_OF_FRICTION)
@@ -51,20 +49,23 @@ class Thing:
 
     def out_of_bounds(self, pos):
         if (0 + self.size) < pos.x < (WIDTH - self.size) and (0 + self.size) < pos.y < (HEIGHT - self.size):
-            self.force_reset = True
             return True
         elif (0 + self.size) < pos.x < (WIDTH - self.size):
             y = self.velocity.y
             self.velocity.y = 0
-            self.apply_force(Vector(0, -y*self.mass)*COEFFICIENT_OF_RESTITUTION)
-            self.force_reset = False
+            self.velocity += Vector(0, -y*self.mass)*COEFFICIENT_OF_RESTITUTION/self.mass
             return True
         elif (0 + self.size) < pos.y < (HEIGHT - self.size):
             x = self.velocity.x
             self.velocity.x = 0
-            self.apply_force(Vector(-x*self.mass, 0)*COEFFICIENT_OF_RESTITUTION)
-            self.force_reset = False
+            self.velocity += Vector(-x*self.mass, 0)*COEFFICIENT_OF_RESTITUTION/self.mass
             return True
+
+        y = self.velocity.y
+        self.velocity.y = 0
+        x = self.velocity.x
+        self.velocity.x = 0
+        self.velocity += Vector(-x*self.mass, -y*self.mass)*COEFFICIENT_OF_RESTITUTION/self.mass      
         return False
 
 
