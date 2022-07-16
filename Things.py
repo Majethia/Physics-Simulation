@@ -3,7 +3,7 @@ from constansts import *
 import pygame
 
 class Thing:
-    def __init__(self,size: int, mass: int, pos: Vector, friction_toggle: bool):
+    def __init__(self,size: int, mass: int, pos: Vector, friction_toggle: bool, shape: str, color: tuple[3]):
         self.size = size
         self.mass = mass
         self.pos = pos
@@ -12,6 +12,8 @@ class Thing:
         self.force = Vector(0, 0)
         self.friction_toggle = friction_toggle
         self.force_reset = True
+        self.shape = shape
+        self.color = color
 
     def apply_force(self, force: Vector):
         self.force += force
@@ -68,14 +70,33 @@ class Thing:
         self.velocity += Vector(-x*self.mass, -y*self.mass)*COEFFICIENT_OF_RESTITUTION/self.mass      
         return False
 
-
-
-
-class Circle(Thing):
     def draw(self, window):
-        pygame.draw.circle(window, (255,0,0), (self.pos.x, self.pos.y), self.size)
+        if self.shape == 'circle':
+            pygame.draw.circle(window, self.color, (self.pos.x, self.pos.y), self.size)
+        elif self.shape == 'square':
+            pygame.draw.rect(window, self.color, pygame.Rect(self.pos.x, self.pos.y, self.size, self.size))
 
 
-class Square(Thing):    
-    def draw(self, window):
-        pygame.draw.rect(window, (255,0,0), pygame.Rect(self.pos.x, self.pos.y, self.size, self.size))
+class Player(Thing):
+    def __init__(self, size: int, mass: int, pos: Vector, friction_toggle: bool, shape: str, controls: int, color: tuple[3]):
+        super().__init__(size, mass, pos, friction_toggle, shape, color)
+        self._controls = controls
+    
+
+    def control(self):
+        keys_pressed = pygame.key.get_pressed()
+        if keys_pressed[CONTROLS[self._controls][0]]:
+            self.apply_force(Vector(-FORCE, 0))
+        
+        if keys_pressed[CONTROLS[self._controls][1]]:
+            self.apply_force(Vector(+FORCE, 0))
+
+        if keys_pressed[CONTROLS[self._controls][2]]:
+            self.apply_force(Vector(0, -FORCE))
+        
+        if keys_pressed[CONTROLS[self._controls][3]]:
+            self.apply_force(Vector(0, +FORCE))
+
+        if keys_pressed[CONTROLS[self._controls][4]]:
+            self.apply_brakes()
+

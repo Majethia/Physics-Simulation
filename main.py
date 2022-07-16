@@ -1,6 +1,6 @@
 import pygame
 from Utils import Vector
-from Things import Circle
+from Things import Player
 from constansts import *
 
 pygame.init()
@@ -19,32 +19,23 @@ def main():
     data = ""
     clock = pygame.time.Clock()
     run = True
-    p = Circle(20, mass=1000, pos=Vector(WIDTH/2, HEIGHT/2), friction_toggle=True)
+    p = Player(size = 20, mass=1000, pos=Vector(WIDTH/2, HEIGHT/2), friction_toggle=True, shape='circle', color = (255, 0, 0), controls = 0)
+    q = Player(size = 20, mass=1000, pos=Vector(WIDTH/2, HEIGHT/2), friction_toggle=True, shape='circle', color = (0, 255, 0), controls = 1)
     while run:
         clock.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-        keys_pressed = pygame.key.get_pressed()
-
-        if keys_pressed[pygame.K_a]:
-            p.apply_force(Vector(-FORCE, 0))
-        
-        if keys_pressed[pygame.K_d]:
-            p.apply_force(Vector(+FORCE, 0))
-
-        if keys_pressed[pygame.K_w]:
-            p.apply_force(Vector(0, -FORCE))
-        
-        if keys_pressed[pygame.K_s]:
-            p.apply_force(Vector(0, +FORCE))
-
-        if keys_pressed[pygame.K_SPACE]:
-            p.apply_brakes()
-
         WIN.fill((255, 255, 255))
+
+        q.control()
+        p.control()
+
         p.update()
+        q.update()
+
         p.draw(WIN)
+        q.draw(WIN)
 
         count += 1
         if count == 6:
