@@ -50,6 +50,8 @@ class Thing:
         self.update_force()
 
     def out_of_bounds(self, pos):
+        if SET_BOUNDS == False:
+            return True
         if (0 + self.size) < pos.x < (WIDTH - self.size) and (0 + self.size) < pos.y < (HEIGHT - self.size):
             return True
         elif (0 + self.size) < pos.x < (WIDTH - self.size):
